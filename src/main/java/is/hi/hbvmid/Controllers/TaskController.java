@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @Controller
-public class HomeController {
+public class TaskController {
     private TaskService taskService;
 
     @Autowired
-    public HomeController(TaskService taskService){
+    public TaskController(TaskService taskService){
         this.taskService =taskService;
     }
 
