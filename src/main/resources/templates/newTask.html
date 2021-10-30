@@ -23,7 +23,7 @@
             <option
                     th:each="category : ${T(is.hi.hbvmid.Persitence.Util.TaskCategory).values()}"
                     th:value="${category}"
-                    th:text="${category}">
+                    th:text="${category.displayValue}">
             </option>
         </select>
     </div>

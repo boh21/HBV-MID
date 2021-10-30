@@ -51,6 +51,7 @@ public class TaskController {
         if(result.hasErrors()){
             return "newTask";
         }
+        //TODO: Add default values not given bu user.
         User sessUser = (User) session.getAttribute("LoggedInUser");
         task.setOwner(sessUser);
         taskService.save(task);
