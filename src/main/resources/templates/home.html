@@ -15,6 +15,11 @@
             <tr>
                 <th>Task name</th>
                 <th>Priority</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Due Date</th>
+                <th>Category</th>
+                <th>Status</th>
                 <th>Owner</th>
                 <th>Delete</th>
             </tr>
@@ -23,6 +28,11 @@
             <tr th:each="task : ${tasks}">
                 <td th:text="${task.name}"></td>
                 <td th:text="${task.priority}"></td>
+                <td th:text="${task.startDate}"></td>
+                <td th:text="${task.endDate}"></td>
+                <td th:text="${task.dueDate}"></td>
+                <td th:text="${task.category?.displayValue}"></td>
+                <td th:text="${task.status?.displayValue}"></td>
                 <td th:text="${task.owner}"></td>
                 <td><a th:href="@{/delete/{id}(id=${task.ID})}">Delete</a></td>
             </tr>

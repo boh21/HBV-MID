@@ -2,6 +2,7 @@ package is.hi.hbvmid.Persitence.Entities;
 
 import is.hi.hbvmid.Persitence.Util.TaskCategory;
 import is.hi.hbvmid.Persitence.Util.TaskStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,11 +17,14 @@ public class Task {
 
     private String name;
     private Boolean priority;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dueDate;
-    private Enum<TaskCategory> category;
-    private Enum<TaskStatus> status;
+    private TaskCategory category;
+    private TaskStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Task motherTask;
@@ -62,6 +66,8 @@ public class Task {
         this.startDate = startDate;
         this.endDate = endDate;
         this.dueDate = dueDate;
+        this.category = taskCategory;
+        this.status = taskStatus;
     }
 
     public long getID() {
@@ -102,5 +108,21 @@ public class Task {
 
     public void setMotherTask(Task motherTask) {
         this.motherTask = motherTask;
+    }
+
+    public Enum<TaskStatus> getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public TaskCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(TaskCategory category) {
+        this.category = category;
     }
 }

@@ -11,9 +11,22 @@
     <input type="text" th:field="*{name}" id="name" placeholder="Name">
     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
     <label for="priority">Priority</label>
-    <input type="text" th:field="*{priority}" id="priority" placeholder="Priority">
+    <input type="checkbox" th:field="*{priority}" id="priority" placeholder="Priority">
     <span th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></span>
+    <label for="dueDate">Due Date</label>
+    <input type="date" th:field="*{dueDate}" id="dueDate">
+    <span th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></span>
     <input type="submit" value="Add Task">
+    <div>
+        <label for="category">Task Category</label>
+        <select th:field="*{category}" id="category">
+            <option
+                    th:each="category : ${T(is.hi.hbvmid.Persitence.Util.TaskCategory).values()}"
+                    th:value="${category}"
+                    th:text="${category.displayValue}">
+            </option>
+        </select>
+    </div>
 </form>
 <p><a href="/home">Back to home</a></p>
 </body>
