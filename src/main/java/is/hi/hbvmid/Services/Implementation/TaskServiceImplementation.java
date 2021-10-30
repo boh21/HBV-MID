@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/* TODO
+- change(changedTask: Task, oldID: Long): Task
+- findByUser(userID: Long): List<Task>
+- findByFilter(userID: Long, filter: Filter): List<Task>
+ */
+
 @Service
 public class TaskServiceImplementation implements TaskService {
     private TaskRepository taskRepository;

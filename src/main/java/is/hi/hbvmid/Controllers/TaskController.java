@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @Controller
-public class HomeController {
+public class TaskController {
     private TaskService taskService;
 
     @Autowired
-    public HomeController(TaskService taskService){
+    public TaskController(TaskService taskService){
         this.taskService =taskService;
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/home")
     public String homePage(Model model){
         //Call a method in a Service Class
         List<Task> allTasks = taskService.findAll();
@@ -34,7 +34,7 @@ public class HomeController {
     public String deleteBook(@PathVariable("id") long id, Model model){
         Task taskToDelete = taskService.findByTaskID(id);
         taskService.delete(taskToDelete);
-        return  "redirect:/";
+        return  "redirect:/home";
     }
 
     @RequestMapping(value = "/addtask", method = RequestMethod.GET)
@@ -49,6 +49,6 @@ public class HomeController {
             return "newTask";
         }
         taskService.save(task);
-        return "redirect:/";
+        return "redirect:/home";
     }
 }

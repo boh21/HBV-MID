@@ -5,10 +5,11 @@
 </head>
 <body>
 <h2>Login to your account</h2>
-<form action="#" th:action="@{/login}" th:object="${user}"  method="post">
+<form action="#" th:action="@{/}" th:object="${user}"  method="post">
   <input type="text" name="username" id="username" th:field="*{username}"/>
   <input type="text" name="password" id="password" th:value="*{password}"/>
   <input type="submit" value="Login"/>
 </form>
+<p><a href="/signup">Sign up</a></p>
 </body>
 </html>
