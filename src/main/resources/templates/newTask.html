@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a new Book</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/addtask}" th:object="${task}" method="post">
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <label for="priority">Priority</label>
+    <input type="text" th:field="*{priority}" id="priority" placeholder="Priority">
+    <span th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></span>
+    <input type="submit" value="Add Book">
+</form>
+
+</body>
+</html>
