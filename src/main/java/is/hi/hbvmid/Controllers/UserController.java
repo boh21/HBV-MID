@@ -1,5 +1,6 @@
 package is.hi.hbvmid.Controllers;
 
+import is.hi.hbvmid.Persitence.Entities.Task;
 import is.hi.hbvmid.Persitence.Entities.User;
 import is.hi.hbvmid.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,37 @@ public class UserController {
             return "redirect:/home";
         }
         return "redirect:/";
+    }
+
+    //Viðbót 30/10 15:32
+    @RequestMapping(value = "/manageaccount", method = RequestMethod.GET)
+    public String manageaccountForm(User user){
+        return "accountManagement";
+    }
+
+    @RequestMapping(value = "/manageaccount", method = RequestMethod.POST)
+    public String manageaccount(User user, BindingResult result, Model model, HttpSession session){
+        if(result.hasErrors()) {
+            return "redirect:/manageaccount";
+        }
+        String un = user.getUsername();
+        //Senda error ef það er null eh staðar
+        User exists = userService.findByUsername(un);
+        User sessionUser = (User) session.getAttribute("LoggedInUser");
+        if(exists == null){
+            //Passa að það þurfi ekki alltaf að breyta öllu
+            String em = user.getEmail();
+            String pw = user.getPassword();
+            sessionUser.setEmail(em);
+            sessionUser.setUsername(un);
+            sessionUser.setPassword(pw);
+            userService.save(sessionUser);
+            return "redirect:/";
+        }
+
+        //Ná í session user og set af nýju breytunum
+
+        //Ef exists == null, þá save annars villumelding
+        return "redirect:/home";
     }
 }
