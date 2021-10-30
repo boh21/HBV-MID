@@ -1,6 +1,7 @@
 package is.hi.hbvmid.Services.Implementation;
 
 import is.hi.hbvmid.Persitence.Entities.Task;
+import is.hi.hbvmid.Persitence.Entities.User;
 import is.hi.hbvmid.Persitence.Repositories.TaskRepository;
 import is.hi.hbvmid.Services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import java.util.List;
 
 /* TODO
 - change(changedTask: Task, oldID: Long): Task
-- findByUser(userID: Long): List<Task>
 - findByFilter(userID: Long, filter: Filter): List<Task>
  */
 
@@ -43,5 +43,10 @@ public class TaskServiceImplementation implements TaskService {
     @Override
     public void delete(Task task) {
         taskRepository.delete(task);
+    }
+
+    @Override
+    public List<Task> findByUser(User user) {
+        return taskRepository.findByOwner(user);
     }
 }

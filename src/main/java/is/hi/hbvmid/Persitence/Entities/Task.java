@@ -72,6 +72,14 @@ public class Task {
         this.ID = ID;
     }
 
+    public void setOwner(User owner){
+        this.owner = owner;
+    }
+
+    public User getOwner(){
+        return owner;
+    }
+
     public String getName() {
         return name;
     }

@@ -2,7 +2,7 @@
 <html xmlns:th="https://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add a new Book</title>
+    <title>Add a new Task</title>
 </head>
 <body>
 
@@ -13,7 +13,7 @@
     <label for="priority">Priority</label>
     <input type="text" th:field="*{priority}" id="priority" placeholder="Priority">
     <span th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></span>
-    <input type="submit" value="Add Book">
+    <input type="submit" value="Add Task">
 </form>
 <p><a href="/home">Back to home</a></p>
 </body>

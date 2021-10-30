@@ -1,6 +1,7 @@
 package is.hi.hbvmid.Controllers;
 
 import is.hi.hbvmid.Persitence.Entities.Task;
+import is.hi.hbvmid.Persitence.Entities.User;
 import is.hi.hbvmid.Services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -21,10 +23,11 @@ public class TaskController {
         this.taskService =taskService;
     }
 
-    @RequestMapping("/home")
-    public String homePage(Model model){
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String homePage(Model model, HttpSession session){
         //Call a method in a Service Class
-        List<Task> allTasks = taskService.findAll();
+        User sessiUser = (User) session.getAttribute("LoggedInUser");
+        List<Task> allTasks = taskService.findByUser(sessiUser);
         //Add some data to the Model
         model.addAttribute("tasks", allTasks);
         return "home";
@@ -44,10 +47,12 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/addtask", method = RequestMethod.POST)
-    public String addTask(Task task, BindingResult result, Model model){
+    public String addTask(Task task, BindingResult result, HttpSession session, Model model){
         if(result.hasErrors()){
             return "newTask";
         }
+        User sessUser = (User) session.getAttribute("LoggedInUser");
+        task.setOwner(sessUser);
         taskService.save(task);
         return "redirect:/home";
     }

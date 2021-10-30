@@ -15,6 +15,7 @@
             <tr>
                 <th>Task name</th>
                 <th>Priority</th>
+                <th>Owner</th>
                 <th>Delete</th>
             </tr>
             </thead>
@@ -22,6 +23,7 @@
             <tr th:each="task : ${tasks}">
                 <td th:text="${task.name}"></td>
                 <td th:text="${task.priority}"></td>
+                <td th:text="${task.owner}"></td>
                 <td><a th:href="@{/delete/{id}(id=${task.ID})}">Delete</a></td>
             </tr>
             </tbody>

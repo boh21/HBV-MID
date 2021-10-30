@@ -1,6 +1,7 @@
 package is.hi.hbvmid.Services;
 
 import is.hi.hbvmid.Persitence.Entities.Task;
+import is.hi.hbvmid.Persitence.Entities.User;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface TaskService {
     List<Task> findAll();
     Task save(Task task);
     void delete(Task task);
-
+    List<Task> findByUser(User user);
 }
