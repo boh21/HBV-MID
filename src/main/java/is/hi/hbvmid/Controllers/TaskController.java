@@ -21,7 +21,7 @@ public class TaskController {
         this.taskService =taskService;
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/home")
     public String homePage(Model model){
         //Call a method in a Service Class
         List<Task> allTasks = taskService.findAll();
@@ -34,7 +34,7 @@ public class TaskController {
     public String deleteBook(@PathVariable("id") long id, Model model){
         Task taskToDelete = taskService.findByTaskID(id);
         taskService.delete(taskToDelete);
-        return  "redirect:/";
+        return  "redirect:/home";
     }
 
     @RequestMapping(value = "/addtask", method = RequestMethod.GET)
@@ -49,6 +49,6 @@ public class TaskController {
             return "newTask";
         }
         taskService.save(task);
-        return "redirect:/";
+        return "redirect:/home";
     }
 }

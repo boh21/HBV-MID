@@ -43,12 +43,12 @@ public class UserController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String loginGET(User user){
         return "login";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String loginPOST(User user, BindingResult result, Model model, HttpSession session){
         if(result.hasErrors()){
             return "login";
@@ -57,7 +57,7 @@ public class UserController {
         if(exists != null){
             session.setAttribute("LoggedInUser", exists);
             model.addAttribute("LoggedInUser", exists);
-            return "LoggedInUser";
+            return "redirect:/home";
         }
         return "redirect:/";
     }
@@ -67,7 +67,7 @@ public class UserController {
         User sessionUser = (User) session.getAttribute("LoggedInUser");
         if(sessionUser  != null){
             model.addAttribute("LoggedInUser", sessionUser);
-            return "loggedInUser";
+            return "redirect:/home";
         }
         return "redirect:/";
     }
