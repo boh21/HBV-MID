@@ -64,4 +64,17 @@ public class TaskController {
         taskService.save(task);
         return "redirect:/home";
     }
+
+    @RequestMapping(value = "/pomodoro", method = RequestMethod.GET)
+    public String pomodoroG(User user){
+        return "pomodoro";
+    }
+
+    @RequestMapping(value = "/pomodoro", method = RequestMethod.POST)
+    public String pomodoroPOST(User user, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "redirect:/home";
+        }
+        return "redirect:/home";
+    }
 }
