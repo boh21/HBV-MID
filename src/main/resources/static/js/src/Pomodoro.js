@@ -34,9 +34,12 @@ function render(elapsedTime) {
     g_ctx.fillText(hoursElapsed + ":" + minutesElapsed + ":" + secondsElasped, g_canvas.width/2, g_canvas.height/2);
     g_ctx.restore();
 }
-
 //initialize
-startTimer();
+function init() {
+    startTimer();
+    //call update 30 times per second
+    var g_intervalID = window.setInterval(update, 33.333);
+}
 
-//call update 30 times per second
-var intervalID = window.setInterval(update, 33.333);
+render(0);
+

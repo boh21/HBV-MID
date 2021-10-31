@@ -5,9 +5,10 @@
     <title>Pomodoro timer</title>
 </head>
 <body>
-<h2>Pomodoro timer</h2>
-<button onclick="render(1500)">Start time</button>
+    <h2>Pomodoro timer</h2>
+    <canvas id="myCanvas" width="400" height="400" style="border:1px solid black;"></canvas>
+    <script type="text/javascript" th:src="@{/js/src/pomodoro.js}"></script>
+    <button onclick="init()">Start time</button>
     <p><a href="/home">Back to home</a></p>
-<script src="Pomodoro.js"></script>
 </body>
 </html>
