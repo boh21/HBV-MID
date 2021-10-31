@@ -1,6 +1,8 @@
 package is.hi.hbvmid.Services;
 
-/*
+import is.hi.hbvmid.Persitence.Entities.User;
+
+/* TODO
 - countTasks(minDate: Date, maxDate: Date) : Int
 - countTasksByStatus(minDate: Date, maxDate: Date) : List<Int>
 - showAvgByStatus(minDate: Date, maxDate: Data) : List<Double>
@@ -12,4 +14,5 @@ package is.hi.hbvmid.Services;
 - compareEndDateAndDueDate(minDate: Date, maxDate: Date) : Double
  */
 public interface StatsService {
+    int countTasks(User owner);
 }

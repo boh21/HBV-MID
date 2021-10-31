@@ -91,11 +91,9 @@ public class   UserController {
             return "redirect:/manageaccount";
         }
         String un = user.getUsername();
-        //Senda error ef það er null eh staðar
-        User exists = userService.findByUsername(un);
         User sessionUser = (User) session.getAttribute("LoggedInUser");
-        if(exists == null){
-            //Passa að það þurfi ekki alltaf að breyta öllu
+        User exists = userService.findByUsername(un);
+        if(exists == null || un.equals(sessionUser.getUsername())){
             String em = user.getEmail();
             String pw = user.getPassword();
             sessionUser.setEmail(em);
@@ -104,10 +102,6 @@ public class   UserController {
             userService.save(sessionUser);
             return "redirect:/";
         }
-
-        //Ná í session user og set af nýju breytunum
-
-        //Ef exists == null, þá save annars villumelding
         return "redirect:/home";
     }
 
