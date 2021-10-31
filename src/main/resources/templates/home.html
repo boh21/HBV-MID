@@ -2,7 +2,7 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Library System</title>
+    <title>MID - Mark it done</title>
 </head>
 <body>
 
@@ -42,7 +42,8 @@
     <p><a href="/addtask">Add a new task</a></p>
     <p><a href="/pomodoro">Pomodoro timer</a></p>
     <p><a href="/manageaccount">Manage my account</a></p>
-    <p><a href="/">Log off</a></p>
+    <p><a href="/logoff">Log off</a></p>
+    <h3>Search tasks by name</h3>
     <form action="#" th:action="@{/home}" method="get">
         <label for="taskName">Name</label>
         <input type="text" name="taskName" id="taskName" th:value="*{taskName}" >

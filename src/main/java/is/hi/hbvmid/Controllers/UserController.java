@@ -75,8 +75,12 @@ public class UserController {
 
     //Viðbót 30/10 15:32
     @RequestMapping(value = "/manageaccount", method = RequestMethod.GET)
-    public String manageaccountForm(User user){
-        return "accountManagement";
+    public String manageaccountForm(User user, HttpSession session){
+        User sessiUser = (User) session.getAttribute("LoggedInUser");
+        if (sessiUser != null) {
+            return "accountManagement";
+        }
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/manageaccount", method = RequestMethod.POST)
@@ -103,5 +107,13 @@ public class UserController {
 
         //Ef exists == null, þá save annars villumelding
         return "redirect:/home";
+    }
+
+    @RequestMapping(value = "/logoff", method = RequestMethod.GET)
+    public String loggedoffGET(HttpSession session, Model model){
+        User sessionUser = (User) session.getAttribute("LoggedInUser");
+        session.setAttribute("LoggedInUser", null);
+        model.addAttribute("LoggedInUser", null);
+        return "redirect:/";
     }
 }

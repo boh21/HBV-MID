@@ -27,17 +27,20 @@ public class TaskController {
     public String homePage(Model model, HttpSession session, String taskName){
         //Call a method in a Service Class
         User sessiUser = (User) session.getAttribute("LoggedInUser");
-        //Search for Tasks
-        List<Task> allTasks;
-        System.out.println(taskName);
-        if(taskName != null) {
-            allTasks = taskService.findByUserAndName(sessiUser, taskName);
-        } else {
-            allTasks = taskService.findByUser(sessiUser);
+        if (sessiUser != null) {
+            //Search for Tasks
+            List<Task> allTasks;
+            System.out.println(taskName);
+            if (taskName != null) {
+                allTasks = taskService.findByUserAndName(sessiUser, taskName);
+            } else {
+                allTasks = taskService.findByUser(sessiUser);
+            }
+            //Add some data to the Model
+            model.addAttribute("tasks", allTasks);
+            return "home";
         }
-        //Add some data to the Model
-        model.addAttribute("tasks", allTasks);
-        return "home";
+        else return "redirect:/";
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
