@@ -40,8 +40,9 @@ public class   UserController {
         User exists = userService.findByUsername(user.getUsername());
         if(exists == null){
             userService.save(user);
+            return "redirect:/";
         }
-        return "redirect:/";
+        else return "redirect:/signup";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -75,9 +76,10 @@ public class   UserController {
 
     //Viðbót 30/10 15:32
     @RequestMapping(value = "/manageaccount", method = RequestMethod.GET)
-    public String manageaccountForm(User user, HttpSession session){
+    public String manageaccountForm(User user, HttpSession session, Model model){
         User sessiUser = (User) session.getAttribute("LoggedInUser");
         if (sessiUser != null) {
+            model.addAttribute("LoggedInUser", sessiUser);
             return "accountManagement";
         }
         return "redirect:/";

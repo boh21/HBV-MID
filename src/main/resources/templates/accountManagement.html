@@ -7,11 +7,11 @@
 <h2>Change your information</h2>
 <form action="#" th:action="@{/manageaccount}" th:object="${user}"  method="post">
     <label for="username">New username</label>
-    <input th:text="${user.username}" type="text" th:field="*{username}" id="username"  name="username"/>
+    <input type="text" id="username" name="username" th:value="${LoggedInUser.username}" required/>
     <label for="password">New password</label>
-    <input type="text" th:field="*{password}" id="password" placeholder="password" required/>
+    <input type="text" id="password" name="password" th:value="${LoggedInUser.password}" required/>
     <label for="email">New email</label>
-    <input type="text" th:field="*{email}" id="email" placeholder="email" required/>
+    <input type="email" id="email" name="email" th:value="${LoggedInUser.email}" required/>
     <input type="submit" value="Submit">
 </form>
 <p><a href="/home">Back to home</a></p>
