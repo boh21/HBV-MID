@@ -8,6 +8,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Date;
 
+//The filter is not currently used in the project, and will likely be cut
+
 public class TaskFilter {
     private Date minDate;
     private Date maxDate;
@@ -76,41 +78,38 @@ public class TaskFilter {
         this.name = name;
     }
 
-    //Constructs a CriteriaQueary from the variables in this filter
+    //Constructs a CriteriaQuery from the variables in this filter
 
-    //TODO: Add a JPA Static Metamodel generator to enable this function, or use strings:
+    //TODO: Add a JPA Static Metamodel generator to to allow for easier refactoring:
 
     public CriteriaQuery<Task> getQuery() {
-        /*
         CriteriaQuery<Task> query = this.builder.createQuery(Task.class);
-        Root<Task> root = query.from(Task.class);
+        Root<Task> task = query.from(Task.class);
 
         if(this.minDate != null) {
-            Predicate afterDate = builder.greaterThan(root.get(Task_.dueDate), this.minDate);
+            Predicate afterDate = builder.greaterThan(task.get("dueDate"), this.minDate);
             query.where(builder.and(afterDate));
         }
         if(this.maxDate != null) {
-            Predicate beforeDate = builder.lessThan(root.get(Task_.dueDate), this.maxDate);
+            Predicate beforeDate = builder.lessThan(task.get("dueDate"), this.maxDate);
             query.where(builder.and(beforeDate));
         }
         if(this.status != null) {
-            Predicate status = builder.equal(root.get(Task_.status), this.status);
+            Predicate status = builder.equal(task.get("status"), this.status);
             query.where(builder.and(status));
         }
         if(this.category != null) {
-            Predicate category = builder.equal(root.get(Task_.category), this.category);
+            Predicate category = builder.equal(task.get("category"), this.category);
             query.where(builder.and(category));
         }
         if(this.motherTask != null) {
-            Predicate motherTask = builder.equal(root.get(Task_.motherTask), this.motherTask);
+            Predicate motherTask = builder.equal(task.get("motherTask"), this.motherTask);
             query.where(builder.and(motherTask));
         }
         if(this.name != null) {
-            Predicate nameLike = builder.like(root.get(Task_.name), this.name);
+            Predicate nameLike = builder.like(task.get("name"), this.name);
             query.where(builder.and(nameLike));
         }
         return query;
-         */
-        return null;
     }
 }
