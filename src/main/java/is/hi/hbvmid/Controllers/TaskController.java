@@ -2,6 +2,7 @@ package is.hi.hbvmid.Controllers;
 
 import is.hi.hbvmid.Persitence.Entities.Task;
 import is.hi.hbvmid.Persitence.Entities.User;
+import is.hi.hbvmid.Services.StatsService;
 import is.hi.hbvmid.Services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,10 @@ public class TaskController {
     private TaskService taskService;
 
     @Autowired
-    public TaskController(TaskService taskService){
-        this.taskService =taskService;
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
+
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String homePage(Model model, HttpSession session, String taskName){
@@ -36,8 +38,10 @@ public class TaskController {
             } else {
                 allTasks = taskService.findByUser(sessiUser);
             }
+            //int taskCount = statsService.countTasks(sessiUser);
             //Add some data to the Model
             model.addAttribute("tasks", allTasks);
+            //model.addAttribute("stats", taskCount);
             return "home";
         }
         else return "redirect:/";
