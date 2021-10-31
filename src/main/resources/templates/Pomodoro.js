@@ -25,8 +25,10 @@ function render(elapsedTime) {
     g_ctx.save();
     g_ctx.textAlign = "center";
     g_ctx.font = "Bold 40px Arial";
-    let secondsElasped = Math.floor(elapsedTime/1000)
-    g_ctx.fillText(secondsElasped, g_canvas.width/2, g_canvas.height/2);
+    let secondsElasped = Math.floor(elapsedTime/1000)%60;
+    let minutesElapsed = Math.floor(elapsedTime/60000)%60;
+    let hoursElapsed = Math.floor(elapsedTime/3600000);
+    g_ctx.fillText(hoursElapsed + ":" + minutesElapsed + ":" + secondsElasped, g_canvas.width/2, g_canvas.height/2);
     g_ctx.restore();
 }
 
