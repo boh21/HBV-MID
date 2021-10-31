@@ -17,4 +17,5 @@ public interface TaskService {
     Task save(Task task);
     void delete(Task task);
     List<Task> findByUser(User user);
+    List<Task> findByUserAndName(User user, String name);
 }

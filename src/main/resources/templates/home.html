@@ -43,6 +43,11 @@
     <p><a href="/pomodoro">Pomodoro timer</a></p>
     <p><a href="/manageaccount">Manage my account</a></p>
     <p><a href="/">Log off</a></p>
+    <form action="#" th:action="@{/home}" method="get">
+        <label for="taskName">Name</label>
+        <input type="text" name="taskName" id="taskName" th:value="*{taskName}" >
+    </form>
+
 </div>
 
 </body>

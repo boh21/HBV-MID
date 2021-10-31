@@ -24,10 +24,17 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage(Model model, HttpSession session){
+    public String homePage(Model model, HttpSession session, String taskName){
         //Call a method in a Service Class
         User sessiUser = (User) session.getAttribute("LoggedInUser");
-        List<Task> allTasks = taskService.findByUser(sessiUser);
+        //Search for Tasks
+        List<Task> allTasks;
+        System.out.println(taskName);
+        if(taskName != null) {
+            allTasks = taskService.findByUserAndName(sessiUser, taskName);
+        } else {
+            allTasks = taskService.findByUser(sessiUser);
+        }
         //Add some data to the Model
         model.addAttribute("tasks", allTasks);
         return "home";
@@ -51,7 +58,7 @@ public class TaskController {
         if(result.hasErrors()){
             return "newTask";
         }
-        //TODO: Add default values not given bu user.
+        //TODO: Add default values not given by user.
         User sessUser = (User) session.getAttribute("LoggedInUser");
         task.setOwner(sessUser);
         taskService.save(task);

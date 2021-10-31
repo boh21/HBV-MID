@@ -49,4 +49,9 @@ public class TaskServiceImplementation implements TaskService {
     public List<Task> findByUser(User user) {
         return taskRepository.findByOwner(user);
     }
+
+    @Override
+    public List<Task> findByUserAndName(User user, String name) {
+        return taskRepository.findByOwnerAndNameContains(user, name);
+    }
 }
