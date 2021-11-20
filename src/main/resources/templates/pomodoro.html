@@ -7,8 +7,13 @@
 <body>
     <h2>Pomodoro timer</h2>
     <canvas id="myCanvas" width="400" height="400" style="border:1px solid black;"></canvas>
+    <audio id="Doorbell" th:src="@{/audio/Doorbell.mp3}"></audio>
     <script type="text/javascript" th:src="@{/js/src/pomodoro.js}"></script>
-    <button onclick="init()">Start time</button>
-    <p><a href="/home">Back to home</a></p>
+    <div>
+        <button onclick="init()">Start time</button>
+        <button onclick="pauseTimer()">Stop</button>
+        <p><a href="/home">Back to home</a></p>
+    </div>
+
 </body>
 </html>
