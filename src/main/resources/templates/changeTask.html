@@ -1,0 +1,39 @@
+<html xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My account</title>
+</head>
+<body>
+<h2>Change your information</h2>
+<form action="" th:href="@{/change/{id}(id=${taskToChange.ID})}" th:object="${task}" method="post">
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" th:value="${taskToChange.name}" required>
+    <label for="priority">Priority</label>
+    <input type="checkbox" name="priority" id="priority" checked>
+    <label for="dueDate">Due Date</label>
+    <input type="date" name="dueDate" id="dueDate" th:value="${taskToChange.dueDate}">
+    <label for="startDate">Start Date</label>
+    <input type="date" name="startDate" id="startDate" th:value="${taskToChange.startDate}">
+  <input type="submit" value="Change task">
+  <div>
+      <label for="category">Task Category</label>
+      <select name="category" id="category" th:value="${taskToChange.category}">
+          <option
+                  th:each="category : ${T(is.hi.hbvmid.Persitence.Util.TaskCategory).values()}"
+                  th:value="${category}"
+                  th:text="${category.displayValue}">
+          </option>
+      </select>
+      <label for="status">Task status</label>
+      <select name="status" id="status" th:value="${taskToChange.status}">
+          <option
+                  th:each="status : ${T(is.hi.hbvmid.Persitence.Util.TaskStatus).values()}"
+                  th:value="${status}"
+                  th:text="${status.displayValue}">
+          </option>
+      </select>
+  </div>
+</form>
+<p><a href="/home">Back to home</a></p>
+</body>
+</html>

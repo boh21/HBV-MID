@@ -6,50 +6,55 @@
 </head>
 <body>
 
-<div th:switch="${tasks}">
-    <h2 th:case="null">No tasks yet!</h2>
-    <div th:case="*">
-        <h2>Tasks</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Task name</th>
-                <th>Priority</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Due Date</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Owner</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="task : ${tasks}">
-                <td th:text="${task.name}"></td>
-                <td th:text="${task.priority}"></td>
-                <td th:text="${task.startDate}"></td>
-                <td th:text="${task.endDate}"></td>
-                <td th:text="${task.dueDate}"></td>
-                <td th:text="${task.category?.displayValue}"></td>
-                <td th:text="${task.status?.displayValue}"></td>
-                <td th:text="${task.owner}"></td>
-                <td><a th:href="@{/delete/{id}(id=${task.ID})}">Delete</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <p><a href="/addtask">Add a new task</a></p>
-    <p><a href="/pomodoro">Pomodoro timer</a></p>
-    <p><a href="/manageaccount">Manage my account</a></p>
-    <p><a href="/stats">My statistics</a></p>
-    <p><a href="/logoff">Log off</a></p>
-    <h3>Search tasks by name</h3>
-    <form action="#" th:action="@{/home}" method="get">
-        <label for="taskName">Name</label>
-        <input type="text" name="taskName" id="taskName" th:value="*{taskName}" >
-    </form>
+<div th:if="${tasks==null or tasks.empty}">
+    No Tasks Yet!
 </div>
-
+<div th:if="${tasks!=null and !tasks.empty}">
+    <div th:switch="${tasks}">
+        <h2 th:case="null">No tasks yet!</h2>
+        <div th:case="*">
+            <h2>Tasks</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Task name</th>
+                    <th>Priority</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Due Date</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Owner</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="task : ${tasks}">
+                    <td th:text="${task.name}"></td>
+                    <td th:text="${task.priority}"></td>
+                    <td th:text="${task.startDate}"></td>
+                    <td th:text="${task.endDate}"></td>
+                    <td th:text="${task.dueDate}"></td>
+                    <td th:text="${task.category?.displayValue}"></td>
+                    <td th:text="${task.status?.displayValue}"></td>
+                    <td th:text="${task.owner.username}"></td>
+                    <td><a th:href="@{/change/{id}(id=${task.ID})}">Change</a></td>
+                    <td><a th:href="@{/delete/{id}(id=${task.ID})}">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<p><a href="/addtask">Add a new task</a></p>
+<p><a href="/pomodoro">Pomodoro timer</a></p>
+<p><a href="/manageaccount">Manage my account</a></p>
+<p><a href="/stats">My statistics</a></p>
+<p><a href="/logoff">Log off</a></p>
+<h3>Search tasks by name</h3>
+<form action="#" th:action="@{/home}" method="get">
+    <label for="taskName">Name</label>
+    <input type="text" name="taskName" id="taskName" th:value="*{taskName}" >
+</form>
 </body>
 </html>>

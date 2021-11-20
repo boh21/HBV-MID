@@ -100,7 +100,7 @@ public class   UserController {
             sessionUser.setUsername(un);
             sessionUser.setPassword(pw);
             userService.save(sessionUser);
-            return "redirect:/";
+            return "redirect:/home";
         }
         return "redirect:/home";
     }

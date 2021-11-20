@@ -6,8 +6,8 @@
 <body>
 <h2>Login to your account</h2>
 <form action="#" th:action="@{/}" th:object="${user}"  method="post">
-  <input type="text" name="username" id="username" th:field="*{username}"/>
-  <input type="text" name="password" id="password" th:value="*{password}"/>
+  <input type="text" name="username" id="username" th:field="*{username}" placeholder="username" required/>
+  <input type="password" name="password" id="password" th:value="*{password}" placeholder="password" required/>
   <input type="submit" value="Login"/>
 </form>
 <p><a href="/signup">Sign up</a></p>

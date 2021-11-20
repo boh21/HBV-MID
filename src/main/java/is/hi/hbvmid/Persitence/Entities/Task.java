@@ -110,7 +110,7 @@ public class Task {
         this.motherTask = motherTask;
     }
 
-    public Enum<TaskStatus> getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 

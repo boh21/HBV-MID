@@ -2,9 +2,12 @@ package is.hi.hbvmid.Controllers;
 
 import is.hi.hbvmid.Persitence.Entities.Task;
 import is.hi.hbvmid.Persitence.Entities.User;
+import is.hi.hbvmid.Persitence.Util.TaskCategory;
+import is.hi.hbvmid.Persitence.Util.TaskStatus;
 import is.hi.hbvmid.Services.StatsService;
 import is.hi.hbvmid.Services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -38,20 +42,51 @@ public class TaskController {
             } else {
                 allTasks = taskService.findByUser(sessiUser);
             }
-            //int taskCount = statsService.countTasks(sessiUser);
             //Add some data to the Model
             model.addAttribute("tasks", allTasks);
-            //model.addAttribute("stats", taskCount);
             return "home";
         }
         else return "redirect:/";
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String deleteBook(@PathVariable("id") long id, Model model){
+    public String deleteTask(@PathVariable("id") long id, Model model){
         Task taskToDelete = taskService.findByTaskID(id);
         taskService.delete(taskToDelete);
         return  "redirect:/home";
+    }
+
+    @RequestMapping(value = "/change/{id}", method = RequestMethod.GET)
+    public String changeTaskForm(Model model, HttpSession session, @PathVariable("id") long id){
+        User sessiUser = (User) session.getAttribute("LoggedInUser");
+        Task taskToChange = taskService.findByTaskID(id);
+        if (sessiUser != null) {
+            model.addAttribute("taskToChange", taskToChange);
+            return  "changeTask";
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/change/{id}", method = RequestMethod.POST)
+    public String changeTask(Task task, BindingResult result, Model model, @PathVariable("id") long id){
+        if(result.hasErrors()) {
+            return "redirect:/home";
+        }
+        Task taskToChange = taskService.findByTaskID(id);
+        String nname = task.getName();
+        Boolean npriority = task.getPriority();
+        //TODO Fix the checked according to user preference
+        TaskCategory ncategory = task.getCategory();
+        TaskStatus nstatus = task.getStatus();
+        Date ndueDate = task.getDueDate();
+
+        taskToChange.setName(nname);
+        taskToChange.setPriority(npriority);
+        taskToChange.setCategory(ncategory);
+        taskToChange.setStatus(nstatus);
+        taskToChange.setDueDate(ndueDate);
+        taskService.save(taskToChange);
+        return "redirect:/home";
     }
 
     @RequestMapping(value = "/addtask", method = RequestMethod.GET)
