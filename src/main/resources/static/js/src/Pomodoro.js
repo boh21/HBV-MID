@@ -3,7 +3,12 @@
 //Get Canvas to display on
 var g_canvas = document.getElementById("myCanvas");
 var g_ctx = g_canvas.getContext("2d");
-//Important Golbals
+//Get Inputs to get user prefrences
+var g_sessionLengthInput = document.getElementById("sessionLength");
+var g_shortBreakLengthInput = document.getElementById("shortBreakLength");
+var g_longBreakLengthInput = document.getElementById("longBreakLength");
+var g_numSessionsInput = document.getElementById("numSessions");
+//Important Globals
 var g_intervalID;
 var g_initialized = false;
 var g_paused = false;
@@ -17,10 +22,9 @@ var g_currentSessionLength = NaN;
 var g_sessionLength = 0.5*60*1000; // In Milliseconds
 var g_shortBreakLength = 0.10*60*1000; // In Milliseconds
 var g_longBreakLength = 0.25*60*1000; // In Milliseconds
-var g_numSessionsBeforeLongBreak = 4;
+var g_numSessions = 4; //Num Sessions before long break
 
 function startTimer() {
-    console.log("Timer Started");
     let now = new Date();
     g_elapsedTime = 0;
     g_startTime = now.getTime();
@@ -31,7 +35,6 @@ function pauseTimer() {
     if(g_paused) {
         return;
     }
-    console.log("Timer Paused");
     let now = new Date();
     g_currentTime = now.getTime();
     g_elapsedTime += g_currentTime - g_startTime;
@@ -43,7 +46,6 @@ function resumeTimer() {
     if(!g_paused) {
         return;
     }
-    console.log("Timer Resumed");
     let now = new Date()
     g_startTime = now.getTime();
     g_currentTime = now.getTime();
@@ -51,9 +53,10 @@ function resumeTimer() {
     g_intervalID = window.setInterval(update, 33.333);
 }
 
-function nextSession() {
-    document.getElementById('Doorbell').play();
-
+function nextSession(playSound = true) {
+    if(playSound) {
+        document.getElementById('Doorbell').play();
+    }
     g_startTime = NaN;
     g_currentTime = NaN;
     g_elapsedTime = NaN;
@@ -61,15 +64,34 @@ function nextSession() {
     g_paused = false;
     window.clearInterval(g_intervalID);
     g_currentSession++;
+    return(updateCurrentSessionLength());
+}
 
-    let sessionsTillLongBreak = 2 * g_numSessionsBeforeLongBreak;
-
+function updateCurrentSessionLength() {
+    let sessionsTillLongBreak = 2 * g_numSessions;
     if(g_currentSession%sessionsTillLongBreak === 0) { //Long Break
         return g_longBreakLength;
     } else if(g_currentSession%2 === 0) { //Short Break
         return g_shortBreakLength;
     } else {
         return g_sessionLength;
+    }
+}
+
+function updatePreferences() {
+    g_sessionLength = g_sessionLengthInput.value*60*1000;
+    g_shortBreakLength = g_shortBreakLengthInput.value*60*1000;
+    g_longBreakLength = g_longBreakLengthInput.value*60*1000;
+    g_numSessions = g_numSessionsInput.value*60*1000;
+    g_currentSessionLength = updateCurrentSessionLength();
+    if(g_paused || !g_initialized) {
+        if(isNaN(g_currentSessionLength)) {
+            g_currentSessionLength = g_sessionLength;
+        }
+        if(isNaN( g_elapsedTime)) {
+            g_elapsedTime = 0;
+        }
+        render(g_elapsedTime, g_currentSessionLength);
     }
 }
 
@@ -112,8 +134,7 @@ function init() {
             g_currentSessionLength = g_sessionLength;
         }
     }
-
 }
 
+updatePreferences();
 render(0, g_sessionLength);
-

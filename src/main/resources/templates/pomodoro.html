@@ -6,14 +6,31 @@
 </head>
 <body>
     <h2>Pomodoro timer</h2>
-    <canvas id="myCanvas" width="400" height="400" style="border:1px solid black;"></canvas>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
     <audio id="Doorbell" th:src="@{/audio/Doorbell.mp3}"></audio>
-    <script type="text/javascript" th:src="@{/js/src/pomodoro.js}"></script>
     <div>
-        <button onclick="init()">Start time</button>
-        <button onclick="pauseTimer()">Stop</button>
-        <p><a href="/home">Back to home</a></p>
+        <button onclick="init()">Start/Resume Session</button>
+        <button onclick="pauseTimer()">Stop/Pause</button>
+        <button onclick="nextSession(0)">End This Session</button>
+        <button onclick="updatePreferences()">Update Prefrences</button>
     </div>
-
+    <div>
+        <label for="sessionLength">Choose session Length:</label>
+        <input id="sessionLength" type="number" min="15" max="120" value="25">
+    </div>
+    <div>
+        <label for="shortBreakLength">Choose Short Break Length:</label>
+        <input id="shortBreakLength" type="number" min="1" max="30" value="5">
+    </div>
+    <div>
+        <label for="longBreakLength">Choose Long Break Length:</label>
+        <input id="longBreakLength" type="number" min="5" max="60" value="15">
+    </div>
+    <div>
+        <label for="numSessions">Choose how many sessions before a long break:</label>
+        <input id="numSessions" type="number" min="1" max="16" value="4">
+    </div>
+    <p><a href="/home">Back to home</a></p>
 </body>
+<script type="text/javascript" th:src="@{/js/src/pomodoro.js}"></script>
 </html>
