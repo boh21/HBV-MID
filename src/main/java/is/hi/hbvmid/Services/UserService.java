@@ -11,5 +11,5 @@ public interface UserService {
     void delete(User user);
     User findByUsername(String username);
     User login(User user);
-
+    void sendPasswordResetEmail(User user);
 }
