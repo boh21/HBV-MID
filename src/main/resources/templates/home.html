@@ -54,7 +54,8 @@
 <h3>Search tasks by name</h3>
 <form action="#" th:action="@{/home}" method="get">
     <label for="taskName">Name</label>
-    <input type="text" name="taskName" id="taskName" th:value="*{taskName}" >
+    <input type="text" name="taskName" id="taskName" th:value="*{taskName}">
+    <input type="submit" value="Search"/>
 </form>
 </body>
-</html>>
+</html>

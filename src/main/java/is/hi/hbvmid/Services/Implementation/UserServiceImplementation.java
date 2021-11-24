@@ -56,12 +56,12 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public void sendPasswordResetEmail(User user) {
+        System.out.println(user);
         SimpleMailMessage smm = new SimpleMailMessage();
         smm.setSubject("Your MID Password");
         smm.setFrom("markitdownapplication@gmail.com");
         smm.setTo(user.getEmail());
         smm.setText("Your Password is: " + user.getPassword());
-        System.out.println("Attempting to Send Email too: " + user.getEmail());
         try {
             javaMailSender.send(smm);
         } catch (MailException e) {

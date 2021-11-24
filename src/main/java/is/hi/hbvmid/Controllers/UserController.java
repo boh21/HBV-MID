@@ -61,6 +61,25 @@ public class   UserController {
             model.addAttribute("LoggedInUser", exists);
             return "redirect:/home";
         }
+        return "redirect:/requestpassword";
+    }
+
+    @RequestMapping(value = "/requestpassword", method = RequestMethod.GET)
+    public String requestpasswordGET(User user){
+        return "requestpassword";
+    }
+
+    @RequestMapping(value = "/requestpassword", method = RequestMethod.POST)
+    public String requestpasswordPOST(User user, BindingResult result){
+        User exists = userService.findByUsername(user.getUsername());
+        System.out.println(exists);
+        if(result.hasErrors()){
+            System.out.println("Result Had Errors!");
+            return "requestpassword";
+        }
+        if(exists != null) {
+            userService.sendPasswordResetEmail(exists);
+        }
         return "redirect:/";
     }
 
