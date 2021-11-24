@@ -24,14 +24,10 @@ public class StatsController {
     public String statsPage(Model model, HttpSession session){
         //Call a method in a Service Class
         User sessiUser = (User) session.getAttribute("LoggedInUser");
-        System.out.println("Hallo 1");
         if (sessiUser != null) {
-            System.out.println("Hallo 2");
             int taskCount = statsService.countTasks(sessiUser);
-            System.out.println("Hallo 3");
             //Add some data to the Model
             model.addAttribute("stats", taskCount);
-            System.out.println("Hallo 4");
             return "stat";
         }
         else return "redirect:/";

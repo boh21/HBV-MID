@@ -73,6 +73,7 @@ public class TaskController {
         //TODO Fix the checked according to user preference
         TaskCategory ncategory = task.getCategory();
         TaskStatus nstatus = task.getStatus();
+        //TODO Fix the dates according to user preference
         Date ndueDate = task.getDueDate();
 
         taskToChange.setName(nname);
@@ -97,6 +98,7 @@ public class TaskController {
         //TODO: Add default values not given by user.
         User sessUser = (User) session.getAttribute("LoggedInUser");
         task.setOwner(sessUser);
+        task.setStatus(TaskStatus.NOT_STARTED);
         taskService.save(task);
         return "redirect:/home";
     }
