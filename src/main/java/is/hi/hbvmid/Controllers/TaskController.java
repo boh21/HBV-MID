@@ -30,20 +30,15 @@ public class TaskController {
 
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String homePage(Model model, HttpSession session, String taskName){
+    public String homePage(Model model, HttpSession session, String name, Boolean priority, TaskCategory category, TaskStatus status){
         //Call a method in a Service Class
         User sessiUser = (User) session.getAttribute("LoggedInUser");
         if (sessiUser != null) {
             //Search for Tasks
-            List<Task> allTasks;
-            System.out.println(taskName);
-            if (taskName != null) {
-                allTasks = taskService.findByUserAndName(sessiUser, taskName);
-            } else {
-                allTasks = taskService.findByUser(sessiUser);
-            }
+            List<Task> tasks = taskService.findTask(sessiUser, name, priority, category, status);
+            System.out.println("Tasks: " + tasks);
             //Add some data to the Model
-            model.addAttribute("tasks", allTasks);
+            model.addAttribute("tasks", tasks);
             return "home";
         }
         else return "redirect:/";
@@ -91,7 +86,6 @@ public class TaskController {
 
     @RequestMapping(value = "/addtask", method = RequestMethod.GET)
     public String addTaskForm(Task task){
-
         return "newTask";
     }
 

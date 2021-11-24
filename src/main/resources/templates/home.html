@@ -51,10 +51,34 @@
 <p><a href="/manageaccount">Manage my account</a></p>
 <p><a href="/stats">My statistics</a></p>
 <p><a href="/logoff">Log off</a></p>
-<h3>Search tasks by name</h3>
+<h3>Filter Tasks</h3>
 <form action="#" th:action="@{/home}" method="get">
-    <label for="taskName">Name</label>
-    <input type="text" name="taskName" id="taskName" th:value="*{taskName}">
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" th:value="*{name}">
+    <label for="priority">Only High Priority</label>
+    <input type="checkbox" name="priority" id="priority" th:value="${true}">
+    <div>
+        <label for="category">Task Category</label>
+        <select name="category" id="category">
+            <option disabled selected="selected">Select One</option>
+            <option
+                    th:each="category : ${T(is.hi.hbvmid.Persitence.Util.TaskCategory).values()}"
+                    th:value="${category}"
+                    th:text="${category.displayValue}">
+            </option>
+        </select>
+    </div>
+    <div>
+        <label for="status">Task Status</label>
+        <select name="status" id="status">
+            <option disabled selected="selected">Select One</option>
+            <option
+                    th:each="status : ${T(is.hi.hbvmid.Persitence.Util.TaskStatus).values()}"
+                    th:value="${status}"
+                    th:text="${status.displayValue}">
+            </option>
+        </select>
+    </div>
     <input type="submit" value="Search"/>
 </form>
 </body>

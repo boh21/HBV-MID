@@ -2,6 +2,8 @@ package is.hi.hbvmid.Services;
 
 import is.hi.hbvmid.Persitence.Entities.Task;
 import is.hi.hbvmid.Persitence.Entities.User;
+import is.hi.hbvmid.Persitence.Util.TaskCategory;
+import is.hi.hbvmid.Persitence.Util.TaskStatus;
 
 import java.util.List;
 
@@ -17,5 +19,5 @@ public interface TaskService {
     Task save(Task task);
     void delete(Task task);
     List<Task> findByUser(User user);
-    List<Task> findByUserAndName(User user, String name);
+    List<Task> findTask(User user, String name, Boolean priority, TaskCategory category, TaskStatus status);
 }
