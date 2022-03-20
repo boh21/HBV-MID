@@ -1,15 +1,18 @@
 package is.hi.hbvmid.Persitence.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import is.hi.hbvmid.Persitence.Util.TaskCategory;
 import is.hi.hbvmid.Persitence.Util.TaskStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +29,13 @@ public class Task {
     private TaskCategory category;
     private TaskStatus status;
 
+    //@ManyToOne(cascade = CascadeType.ALL) //Error
+    //@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) //Error
     @ManyToOne(fetch = FetchType.LAZY)
     private Task motherTask;
 
+    //@ManyToOne(cascade = CascadeType.ALL) //Error
+    //@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) //Error
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
 
