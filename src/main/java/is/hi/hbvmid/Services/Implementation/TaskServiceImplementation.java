@@ -39,6 +39,7 @@ public class TaskServiceImplementation implements TaskService {
     @Override
     public Task save(Task task) {
         //task.setStatus(TaskStatus.NOT_STARTED);
+        System.out.println(taskRepository.save(task));
         return taskRepository.save(task);
     }
 

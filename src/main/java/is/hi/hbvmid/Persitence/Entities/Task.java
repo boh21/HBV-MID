@@ -29,13 +29,9 @@ public class Task implements Serializable {
     private TaskCategory category;
     private TaskStatus status;
 
-    //@ManyToOne(cascade = CascadeType.ALL) //Error
-    //@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) //Error
     @ManyToOne(fetch = FetchType.LAZY)
     private Task motherTask;
 
-    //@ManyToOne(cascade = CascadeType.ALL) //Error
-    //@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) //Error
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
 

@@ -30,17 +30,43 @@ public class TaskControllerAPI {
         this.userService = userService;
     }
 
-
     @RequestMapping(value = "/homeAPI", method = RequestMethod.GET)
     public List<Task> getTasks(){
-        List<Task> tasks = taskService.findAll();
-        List<User> users = userService.findAll();
-        System.out.println("Tösk");
-        System.out.println(tasks.get(0).getName());
-        System.out.println(tasks.get(1).getName());
-        System.out.println("Userar");
-        System.out.println(users.get(0).getUsername());
         return taskService.findAll();
+    }
+
+    @RequestMapping(value = "/homefAPI", method = RequestMethod.GET)
+    public List<Task> getTasksWFilters(@RequestParam(value="priority") Boolean priority,
+                                       @RequestParam(value="category") String categoryInn,
+                                       @RequestParam(value="status") String statusInn){
+        TaskCategory category = TaskCategory.valueOf(categoryInn);
+        TaskStatus status = TaskStatus.valueOf(statusInn);
+        //Call a method in a Service Class
+        List<Task> tasks = taskService.findTask(userService.findByUsername("PrufuUser"), "",  priority, category, status);
+        System.out.println("Skila task");
+        return tasks;
+    }
+
+    @RequestMapping(value = "/homesAPI", method = RequestMethod.GET)
+    public List<Task> getTasksWFilters(@RequestParam(value="name") String name){
+        List<Task> tasks = taskService.findTask(userService.findByUsername("PrufuUser"), name, false, null, null);
+        return tasks;
+    }
+
+    @RequestMapping(value = "/addTaskAPI", method = RequestMethod.POST)
+    public Task addTask(Task task){
+        if (task == null) {
+            System.out.println("Task null");
+            return null;
+        } else {
+            System.out.println(task);
+            User sessUser = userService.findByUsername("PrufuUser");
+            task.setOwner(sessUser);
+            task.setStatus(TaskStatus.NOT_STARTED);
+            System.out.println("Nafn " + task.getName());
+            //return taskService.save(task);
+        }
+        return null;
     }
 
     /*@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
