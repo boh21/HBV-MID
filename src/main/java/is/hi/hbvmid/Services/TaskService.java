@@ -20,4 +20,10 @@ public interface TaskService {
     void delete(Task task);
     List<Task> findByUser(User user);
     List<Task> findTask(User user, String name, Boolean priority, TaskCategory category, TaskStatus status);
+    List<Task> findTasks(User user, String name, Boolean priority1, Boolean priority2,
+                         TaskCategory category1, TaskCategory category2,
+                         TaskCategory category3, TaskCategory category4,
+                         TaskCategory category5, TaskCategory category6,
+                         TaskCategory category7, TaskCategory category8,
+                         TaskStatus status1, TaskStatus status2, TaskStatus status3);
 }
