@@ -1,5 +1,6 @@
 package is.hi.hbvmid.Controllers;
 
+import is.hi.hbvmid.Persitence.Util.PostTask;
 import is.hi.hbvmid.Persitence.Entities.Task;
 import is.hi.hbvmid.Persitence.Entities.User;
 import is.hi.hbvmid.Persitence.Util.TaskCategory;
@@ -7,17 +8,9 @@ import is.hi.hbvmid.Persitence.Util.TaskStatus;
 import is.hi.hbvmid.Services.TaskService;
 import is.hi.hbvmid.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpSession;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -137,8 +130,10 @@ public class TaskControllerAPI {
         return tasks;
     }
 
-    @RequestMapping(value = "/addTaskAPI", method = RequestMethod.POST)
-    public Task addTask(Task task){
+    //@RequestMapping(value = "addTaskAPI", method = RequestMethod.POST)
+    @PostMapping(value = "/addTaskAPI")
+    public Task addTask(@RequestBody Task task){ //@Valid @RequestBody
+        System.out.println("Inni i falli");
         if (task == null) {
             System.out.println("Task null");
             return null;
@@ -148,10 +143,52 @@ public class TaskControllerAPI {
             task.setOwner(sessUser);
             task.setStatus(TaskStatus.NOT_STARTED);
             System.out.println("Nafn " + task.getName());
+            System.out.println("Nafn " + task.getCategory());
+            System.out.println("Nafn " + task.getPriority());
+            System.out.println("Nafn " + task.getDueDate());
             //return taskService.save(task);
+            return task;
         }
-        return null;
+        //return null;
     }
+
+    @PostMapping(value = "/addTaskNameAPI")
+    public Task addTaskName(@RequestBody String name){
+        System.out.println("Inni i falli");
+        User sessUser = userService.findByUsername("PrufuUser");
+        Task task = new Task(name, null, null, null, null,
+                null, TaskStatus.NOT_STARTED);
+        task.setOwner(sessUser);
+        task.setStatus(TaskStatus.NOT_STARTED);
+        System.out.println("Nafn " + task.getName());
+        //return taskService.save(task);
+        return task;
+    }
+
+    @PostMapping(value = "/addATask")
+    public Task addATask(@RequestBody PostTask postTask){
+        System.out.println("Inni i addATask falli");
+        User sessUser = userService.findByUsername("PrufuUser");
+        //Task task = new Task(name, null, null, null, null,
+               // null, TaskStatus.NOT_STARTED);
+        Task task = new Task(postTask.getName(),
+                //Breyta í Boolean úr String
+                Boolean.parseBoolean(postTask.getPriority()),
+                //Breyta í Date úr String
+                Date.valueOf(postTask.getStartDate()),
+                //Breyta í Date úr String
+                Date.valueOf(postTask.getEndDate()),
+                //Breyta í Date úr String
+                Date.valueOf(postTask.getDueDate()),
+                //Breyta í Enum úr String
+                TaskCategory.valueOf(postTask.getCategory()),
+                //Breyta í Enum úr String
+                TaskStatus.valueOf(postTask.getStatus()));
+        task.setOwner(sessUser);
+        System.out.println("Nafn " + postTask.getName());
+        return taskService.save(task);
+    }
+
 
     /*@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String deleteTask(@PathVariable("id") long id, Model model){

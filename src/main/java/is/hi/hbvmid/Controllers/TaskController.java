@@ -99,6 +99,8 @@ public class TaskController {
         User sessUser = (User) session.getAttribute("LoggedInUser");
         task.setOwner(sessUser);
         task.setStatus(TaskStatus.NOT_STARTED);
+        System.out.println("Controller: " + task);
+        System.out.println("Name: " + task);
         taskService.save(task);
         return "redirect:/home";
     }

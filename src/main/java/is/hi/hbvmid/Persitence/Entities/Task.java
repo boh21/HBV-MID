@@ -1,6 +1,7 @@
 package is.hi.hbvmid.Persitence.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import is.hi.hbvmid.Persitence.Util.TaskCategory;
 import is.hi.hbvmid.Persitence.Util.TaskStatus;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,11 +31,23 @@ public class Task implements Serializable {
     private TaskStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("motherTask")
     private Task motherTask;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("owner")
     private User owner;
 
+    public Task(String name, Boolean priority, Date startDate, Date endDate, Date dueDate,
+                TaskCategory taskCategory, TaskStatus taskStatus) {
+        this.name = name;
+        this.priority = priority;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.dueDate = dueDate;
+        this.category = taskCategory;
+        this.status = taskStatus;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -61,16 +74,6 @@ public class Task implements Serializable {
     }
 
     public Task() {
-    }
-
-    public Task(String name, Boolean priority, Date startDate, Date endDate, Date dueDate, TaskCategory taskCategory, TaskStatus taskStatus) {
-        this.name = name;
-        this.priority = priority;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.dueDate = dueDate;
-        this.category = taskCategory;
-        this.status = taskStatus;
     }
 
     public long getID() {
