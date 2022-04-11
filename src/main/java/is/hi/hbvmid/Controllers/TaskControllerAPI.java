@@ -8,7 +8,10 @@ import is.hi.hbvmid.Persitence.Util.TaskStatus;
 import is.hi.hbvmid.Services.TaskService;
 import is.hi.hbvmid.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Date;
 import java.util.List;
@@ -131,7 +134,7 @@ public class TaskControllerAPI {
     }
 
     //@RequestMapping(value = "addTaskAPI", method = RequestMethod.POST)
-    @PostMapping(value = "/addTaskAPI")
+    /*@PostMapping(value = "/addTaskAPI")
     public Task addTask(@RequestBody Task task){ //@Valid @RequestBody
         System.out.println("Inni i falli");
         if (task == null) {
@@ -152,7 +155,7 @@ public class TaskControllerAPI {
         //return null;
     }
 
-    @PostMapping(value = "/addTaskNameAPI")
+    /*@PostMapping(value = "/addTaskNameAPI")
     public Task addTaskName(@RequestBody String name){
         System.out.println("Inni i falli");
         User sessUser = userService.findByUsername("PrufuUser");
@@ -163,9 +166,9 @@ public class TaskControllerAPI {
         System.out.println("Nafn " + task.getName());
         //return taskService.save(task);
         return task;
-    }
+    }*/
 
-    @PostMapping(value = "/addATask")
+    @PostMapping(value = "/addATaskAPI")
     public Task addATask(@RequestBody PostTask postTask){
         System.out.println("Inni i addATask falli");
         User sessUser = userService.findByUsername("PrufuUser");
@@ -189,11 +192,15 @@ public class TaskControllerAPI {
         return taskService.save(task);
     }
 
-
-    /*@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String deleteTask(@PathVariable("id") long id, Model model){
+    //TODO: Gera error handler
+    /*
+     * Eyða taski úr gagnagrunni
+     */
+    @RequestMapping(value = "/deleteTaskAPI/{id}", method = RequestMethod.DELETE)
+    public Task deleteTask(@PathVariable long id) {
+        System.out.println(id);
         Task taskToDelete = taskService.findByTaskID(id);
         taskService.delete(taskToDelete);
-        return  "redirect:/home";
-    }*/
+        return taskToDelete;
+    }
 }
