@@ -30,7 +30,9 @@ public class UserControllerAPI {
             userService.save(user);
             return user;
         }
-        else return null;
+        System.out.println("Username taken");
+        User failUser = new User(null, null, null);
+        return failUser;
     }
 
     @RequestMapping(value = "/loginAPI", method = RequestMethod.POST)
@@ -43,7 +45,8 @@ public class UserControllerAPI {
             return user;
         }
         System.out.println("Username and password do not match");
-        return null;
+        User failUser = new User(null, null, null);
+        return failUser;
     }
 
     /*
