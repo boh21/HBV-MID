@@ -33,23 +33,20 @@ public class UserControllerAPI {
         else return null;
     }
 
-    /*@RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String signupGET(User user){
-        return "signup";
+    @RequestMapping(value = "/loginAPI", method = RequestMethod.POST)
+    public User loginPOST(@RequestBody User user){
+        System.out.println(user.getUsername() + " " + user.getPassword());
+        User exists = userService.login(user);
+        if(exists != null){
+            //If user exists and password matches username
+            System.out.println("Username and password match");
+            return user;
+        }
+        System.out.println("Username and password do not match");
+        return null;
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signupPOST(User user, BindingResult result, Model model){
-        if(result.hasErrors()){
-            return "redirect:/signup";
-        }
-        User exists = userService.findByUsername(user.getUsername());
-        if(exists == null){
-            userService.save(user);
-            return "redirect:/";
-        }
-        else return "redirect:/signup";
-    }
+    /*
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String loginGET(User user){

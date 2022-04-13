@@ -40,12 +40,24 @@ public class TaskControllerAPI {
         this.userService = userService;
     }
 
+    //Skilar öllum töskum í gagnagrunni (frá öllum userum)
     @RequestMapping(value = "/homeAPI", method = RequestMethod.GET)
     public List<Task> getTasks(){
         return taskService.findAll();
     }
 
+    //Skilar öllum töskum notanda
+    @RequestMapping(value = "/homeOAPI", method = RequestMethod.GET)
+    public List<Task> getTasksByOwner(@RequestParam(value="user") String username)
+    {
+        System.out.println(username);
+        System.out.println(taskService.findByUser(userService.findByUsername(username)));
+        return taskService.findByUser(userService.findByUsername(username));
+    }
+
     //TODO: Breyta í fylkjavinnslu
+    //TODO: Athuga hvort hægt er að hafa nafn með
+    //Skilar töskum eftir filterum og user
     @RequestMapping(value = "/homefAPI", method = RequestMethod.GET)
     public List<Task> getTasksWFilters(@RequestParam(value="priority1") Boolean priority1,
                                        @RequestParam(value="priority2") Boolean priority2,
@@ -59,7 +71,8 @@ public class TaskControllerAPI {
                                        @RequestParam(value="category8") String categoryInn8,
                                        @RequestParam(value="status1") String statusInn1,
                                        @RequestParam(value="status2") String statusInn2,
-                                        @RequestParam(value="status3") String statusInn3){
+                                       @RequestParam(value="status3") String statusInn3,
+                                       @RequestParam("user") String username){
 
         if (categoryInn1.equals("")) {
             category1 = null;
@@ -119,7 +132,7 @@ public class TaskControllerAPI {
 
         //Call a method in a Service Class
         System.out.println("Controller");
-        List<Task> tasks = taskService.findTasks(userService.findByUsername("PrufuUser"), "",
+        List<Task> tasks = taskService.findTasks(userService.findByUsername(username), "",
                 priority1, priority2, category1, category2, category3, category4, category5, category6,
                 category7, category8, status1, status2, status3);
         System.out.println("Skila task");
@@ -127,10 +140,49 @@ public class TaskControllerAPI {
         return tasks;
     }
 
+    //Leitar eftir nafni frá search stiku
     @RequestMapping(value = "/homesAPI", method = RequestMethod.GET)
     public List<Task> getTasksWFilters(@RequestParam(value="name") String name){
         List<Task> tasks = taskService.findTask(userService.findByUsername("PrufuUser"), name, false, null, null);
         return tasks;
+    }
+
+    //Bætir við taski á user Prufuuser for now
+    @PostMapping(value = "/addATaskAPI")
+    public Task addATask(@RequestBody PostTask postTask){
+        System.out.println("Inni i addATask falli");
+        User sessUser = userService.findByUsername(postTask.getOwner());
+        System.out.println(postTask.getOwner());
+        //Task task = new Task(name, null, null, null, null,
+               // null, TaskStatus.NOT_STARTED);
+        Task task = new Task(postTask.getName(),
+                //Breyta í Boolean úr String
+                Boolean.parseBoolean(postTask.getPriority()),
+                //Breyta í Date úr String
+                Date.valueOf(postTask.getStartDate()),
+                //Breyta í Date úr String
+                Date.valueOf(postTask.getEndDate()),
+                //Breyta í Date úr String
+                Date.valueOf(postTask.getDueDate()),
+                //Breyta í Enum úr String
+                TaskCategory.valueOf(postTask.getCategory()),
+                //Breyta í Enum úr String
+                TaskStatus.valueOf(postTask.getStatus()));
+        task.setOwner(sessUser);
+        System.out.println("Nafn " + postTask.getName());
+        return taskService.save(task);
+    }
+
+    //TODO: Gera error handler
+    /*
+     * Eyða taski úr gagnagrunni
+     */
+    @RequestMapping(value = "/deleteTaskAPI/{id}", method = RequestMethod.DELETE)
+    public Task deleteTask(@PathVariable long id) {
+        System.out.println(id);
+        Task taskToDelete = taskService.findByTaskID(id);
+        taskService.delete(taskToDelete);
+        return taskToDelete;
     }
 
     //@RequestMapping(value = "addTaskAPI", method = RequestMethod.POST)
@@ -167,40 +219,4 @@ public class TaskControllerAPI {
         //return taskService.save(task);
         return task;
     }*/
-
-    @PostMapping(value = "/addATaskAPI")
-    public Task addATask(@RequestBody PostTask postTask){
-        System.out.println("Inni i addATask falli");
-        User sessUser = userService.findByUsername("PrufuUser");
-        //Task task = new Task(name, null, null, null, null,
-               // null, TaskStatus.NOT_STARTED);
-        Task task = new Task(postTask.getName(),
-                //Breyta í Boolean úr String
-                Boolean.parseBoolean(postTask.getPriority()),
-                //Breyta í Date úr String
-                Date.valueOf(postTask.getStartDate()),
-                //Breyta í Date úr String
-                Date.valueOf(postTask.getEndDate()),
-                //Breyta í Date úr String
-                Date.valueOf(postTask.getDueDate()),
-                //Breyta í Enum úr String
-                TaskCategory.valueOf(postTask.getCategory()),
-                //Breyta í Enum úr String
-                TaskStatus.valueOf(postTask.getStatus()));
-        task.setOwner(sessUser);
-        System.out.println("Nafn " + postTask.getName());
-        return taskService.save(task);
-    }
-
-    //TODO: Gera error handler
-    /*
-     * Eyða taski úr gagnagrunni
-     */
-    @RequestMapping(value = "/deleteTaskAPI/{id}", method = RequestMethod.DELETE)
-    public Task deleteTask(@PathVariable long id) {
-        System.out.println(id);
-        Task taskToDelete = taskService.findByTaskID(id);
-        taskService.delete(taskToDelete);
-        return taskToDelete;
-    }
 }
