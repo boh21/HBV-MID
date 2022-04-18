@@ -5,10 +5,7 @@ import is.hi.hbvmid.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,6 +16,19 @@ public class UserControllerAPI {
     @Autowired
     public UserControllerAPI(UserService userService){
         this.userService = userService;
+    }
+
+    @RequestMapping(value = "/userAPI", method = RequestMethod.GET)
+    public User getUserByName(@RequestParam(value="username") String username) {
+        User exists = userService.findByUsername(username);
+        if(exists == null){
+            System.out.println("User does not exist");
+            User failUser = new User(null, null, null);
+            return failUser;
+        }
+        System.out.println("User does exist");
+        System.out.println("User: " + exists.getUsername() + " " + exists.getPassword() + " " + exists.getEmail() + " " + exists.getID());
+        return exists;
     }
 
     @RequestMapping(value = "/signupAPI", method = RequestMethod.POST)
@@ -35,6 +45,22 @@ public class UserControllerAPI {
         return failUser;
     }
 
+    @RequestMapping(value = "/changeUserAPI", method = RequestMethod.POST)
+    public User changeUser(@RequestBody User user){
+        // Verðum að passa að sami user með sama username og áður
+        // nema núna bara breytt credentials
+        System.out.println("User: " + user.getUsername() + " " + user.getPassword() + " " + user.getEmail() + " " + user.getID());
+        //User backUser = userService.findByUserID(user.getID());
+        User backUser = userService.findByUsername(user.getUsername());
+        backUser.setUsername(user.getUsername());
+        backUser.setPassword(user.getPassword());
+        backUser.setEmail(user.getEmail());
+        userService.save(backUser);
+        System.out.println("User: " + backUser.getUsername() + " " + backUser.getPassword() + " " + backUser.getEmail() + " " + backUser.getID());
+
+        return backUser;
+    }
+
     @RequestMapping(value = "/loginAPI", method = RequestMethod.POST)
     public User loginPOST(@RequestBody User user){
         System.out.println(user.getUsername() + " " + user.getPassword());
@@ -49,92 +75,5 @@ public class UserControllerAPI {
         return failUser;
     }
 
-    /*
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String loginGET(User user){
-        return "login";
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String loginPOST(User user, BindingResult result, Model model, HttpSession session){
-        if(result.hasErrors()){
-            return "login";
-        }
-        User exists = userService.login(user);
-        if(exists != null){
-            session.setAttribute("LoggedInUser", exists);
-            model.addAttribute("LoggedInUser", exists);
-            return "redirect:/home";
-        }
-        return "redirect:/requestpassword";
-    }
-
-    @RequestMapping(value = "/requestpassword", method = RequestMethod.GET)
-    public String requestpasswordGET(User user){
-        return "requestpassword";
-    }
-
-    @RequestMapping(value = "/requestpassword", method = RequestMethod.POST)
-    public String requestpasswordPOST(User user, BindingResult result){
-        User exists = userService.findByUsername(user.getUsername());
-        System.out.println(exists);
-        if(result.hasErrors()){
-            System.out.println("Result Had Errors!");
-            return "requestpassword";
-        }
-        if(exists != null) {
-            userService.sendPasswordResetEmail(exists);
-        }
-        return "redirect:/";
-    }
-
-    @RequestMapping(value = "/loggedin", method = RequestMethod.GET)
-    public String loggedinGET(HttpSession session, Model model){
-        User sessionUser = (User) session.getAttribute("LoggedInUser");
-        if(sessionUser  != null){
-            model.addAttribute("LoggedInUser", sessionUser);
-            return "redirect:/home";
-        }
-        return "redirect:/";
-    }
-
-    //Viðbót 30/10 15:32
-    @RequestMapping(value = "/manageaccount", method = RequestMethod.GET)
-    public String manageaccountForm(User user, HttpSession session, Model model){
-        User sessiUser = (User) session.getAttribute("LoggedInUser");
-        if (sessiUser != null) {
-            model.addAttribute("LoggedInUser", sessiUser);
-            return "accountManagement";
-        }
-        return "redirect:/";
-    }
-
-    @RequestMapping(value = "/manageaccount", method = RequestMethod.POST)
-    public String manageaccount(User user, BindingResult result, Model model, HttpSession session){
-        if(result.hasErrors()) {
-            return "redirect:/manageaccount";
-        }
-        String un = user.getUsername();
-        User sessionUser = (User) session.getAttribute("LoggedInUser");
-        User exists = userService.findByUsername(un);
-        if(exists == null || un.equals(sessionUser.getUsername())){
-            String em = user.getEmail();
-            String pw = user.getPassword();
-            sessionUser.setEmail(em);
-            sessionUser.setUsername(un);
-            sessionUser.setPassword(pw);
-            userService.save(sessionUser);
-            return "redirect:/home";
-        }
-        return "redirect:/home";
-    }
-
-    @RequestMapping(value = "/logoff", method = RequestMethod.GET)
-    public String loggedoffGET(HttpSession session, Model model){
-        User sessionUser = (User) session.getAttribute("LoggedInUser");
-        session.setAttribute("LoggedInUser", null);
-        model.addAttribute("LoggedInUser", null);
-        return "redirect:/";
-    }*/
 }

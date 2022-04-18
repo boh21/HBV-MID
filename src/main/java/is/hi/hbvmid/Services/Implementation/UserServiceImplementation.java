@@ -44,6 +44,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public User findByUserID(long id) { return userRepository.findByID(id); }
+
+    @Override
     public User login(User user) {
         User doesExist = findByUsername(user.getUsername());
         if(doesExist != null){

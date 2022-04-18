@@ -55,6 +55,13 @@ public class TaskControllerAPI {
         return taskService.findByUser(userService.findByUsername(username));
     }
 
+    @RequestMapping(value = "/homesAPI", method = RequestMethod.GET)
+    public List<Task> getTaskByName(@RequestParam(value="name") String name,
+    @RequestParam("user") String username){
+        List<Task> tasks = taskService.findTask(userService.findByUsername(username), name, false, null, null);
+        return tasks;
+    }
+
     //TODO: Breyta í fylkjavinnslu
     //TODO: Athuga hvort hægt er að hafa nafn með
     //Skilar töskum eftir filterum og user
@@ -140,12 +147,6 @@ public class TaskControllerAPI {
         return tasks;
     }
 
-    //Leitar eftir nafni frá search stiku
-    @RequestMapping(value = "/homesAPI", method = RequestMethod.GET)
-    public List<Task> getTasksWFilters(@RequestParam(value="name") String name){
-        List<Task> tasks = taskService.findTask(userService.findByUsername("PrufuUser"), name, false, null, null);
-        return tasks;
-    }
 
     //Bætir við taski á user Prufuuser for now
     @PostMapping(value = "/addATaskAPI")
