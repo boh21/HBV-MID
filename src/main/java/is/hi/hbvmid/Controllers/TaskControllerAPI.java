@@ -151,11 +151,8 @@ public class TaskControllerAPI {
     //Bætir við taski á user Prufuuser for now
     @PostMapping(value = "/addATaskAPI")
     public Task addATask(@RequestBody PostTask postTask){
-        System.out.println("Inni i addATask falli");
         User sessUser = userService.findByUsername(postTask.getOwner());
         System.out.println(postTask.getOwner());
-        //Task task = new Task(name, null, null, null, null,
-               // null, TaskStatus.NOT_STARTED);
         Task task = new Task(postTask.getName(),
                 //Breyta í Boolean úr String
                 Boolean.parseBoolean(postTask.getPriority()),
@@ -169,7 +166,23 @@ public class TaskControllerAPI {
                 TaskCategory.valueOf(postTask.getCategory()),
                 //Breyta í Enum úr String
                 TaskStatus.valueOf(postTask.getStatus()));
+                System.out.println(postTask.getStatus());
         task.setOwner(sessUser);
+        System.out.println("Nafn " + postTask.getName());
+        return taskService.save(task);
+    }
+
+    //Bætir við taski á user Prufuuser for now
+    @PutMapping(value = "/updateATaskAPI/{id}")
+    public Task addATask(@RequestParam(value="id") long ID,  @RequestBody PostTask postTask){
+        Task task = taskService.findByTaskID(ID);
+        User sessUser = userService.findByUsername(postTask.getOwner());
+        System.out.println(postTask.getOwner());
+        task.setName(postTask.getName());
+        task.setCategory(TaskCategory.valueOf(postTask.getCategory()));
+        task.setDueDate(Date.valueOf(postTask.getDueDate()));
+        task.setStatus(TaskStatus.valueOf(postTask.getStatus()));
+        task.setPriority(Boolean.parseBoolean(postTask.getPriority()));
         System.out.println("Nafn " + postTask.getName());
         return taskService.save(task);
     }
